@@ -28,7 +28,10 @@ export class TemporalExplorer
   implements OnModuleInit, OnModuleDestroy, OnApplicationBootstrap {
   @Inject(TEMPORAL_MODULE_OPTIONS_TOKEN) private options: TemporalModuleOptions;
   private readonly logger = new Logger(TemporalExplorer.name);
-  private worker: Worker;
+  public get worker() {
+    return this._worker;
+  }
+  private _worker: Worker;
   private timerId: ReturnType<typeof setInterval>;
 
   constructor(
@@ -90,7 +93,7 @@ export class TemporalExplorer
       }
 
       this.logger.verbose('Creating a new Worker');
-      this.worker = await Worker.create(
+      this._worker = await Worker.create(
         Object.assign(workerOptions, workerConfig),
       );
     }
